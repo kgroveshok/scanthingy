@@ -160,3 +160,6 @@
   160  history >scanthingy/history2.txt
 sudo apt-get install php5-gd php5-mysql php5-curl 
 sudo apt-get  install scanbuttond
+sudo usermod -a -G www-data www-data
+sudo apt-get install php5
+sudo apt-get install apache2 libapache2-mod-php5
