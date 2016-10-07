@@ -1,0 +1,161 @@
+    1  exit
+    2  ls
+    3  dmesg |less
+    4  apt-get install lspci
+    5  sudo apt-get install lspci
+    6  ls
+    7  ls -la
+    8  sudo apt-get install sane
+    9  dmesg
+   10  scanimage  -L
+   11  service saned start
+   12  sudo service saned start
+   13  cd /etc/init.d
+   14  ls
+   15  sudo reboot
+   16  dmesg
+   17  scanimage  -L
+   18  ls
+   19  man scanimage 
+   20  scanimage >a.pmn
+   21  ls
+   22  ls -la
+   23  man scanimage
+   24  scanimage --mode color >a.pmn
+   25  ls -la
+   26  man scanimage
+   27  sudo apt-get -s install scan
+   28  sudo apt-get -s install scan%
+   29  sudo apt-get -s install scan*
+   30  cd
+   31  wget http://www.leptonica.com/source/leptonica-1.73.tar.gz
+   32  ls
+   33  tar zxvf leptonica-1.73.tar.gz 
+   34  cd leptonica-1.73/
+   35  ls
+   36  ./configure
+   37  cd
+   38  git clone https://github.com/tesseract-ocr/tesseract.git
+   39  wget https://github.com/tesseract-ocr/tessdata/archive/master.zip
+   40  ls
+   41  ls -la
+   42  cd leptonica-1.73/
+   43  ls
+   44  sudo apt-get install libtiff
+   45  sudo apt-get install libtiff*
+   46  sudo apt-get install libtiff* libjpg*
+   47  sudo apt-get install libtiff* libjpg-dev
+   48  sudo apt-get install libtiff* libjpg7-dev
+   49  sudo apt-get install libtiff* libjpeg-dev
+   50  sudo apt-get update
+   51  sudo apt-get install libtiff* libjpeg-dev
+   52  ls -la
+   53  ./configure
+   54  make
+   55  cd
+   56  vim scan.ah
+   57  sudo apt-get install vim
+   58  vim scan.sh
+   59  ls
+   60  chmod +x scan.sh 
+   61  cd leptonica-1.73/
+   62  make
+   63  sudo halt -p
+   64  ls
+   65  ls -la
+   66  cd
+   67  git clone git@github.com:kgroveshok/rasppi.git
+   68  git clone git@github.com:kgroveshok/hokbot.git
+   69  git@github.com:kgroveshok/hokbot-bos.git
+   70  git clone git@github.com:kgroveshok/hokbot-bos.git
+   71  git clone git@github.com:kgroveshok/myvimrc.git
+   72  clear
+   73  ls
+   74  ls -latr
+   75  df
+   76  cd scanthingy/
+   77  ls
+   78  vim  oldscan.sh
+   79  vim wraoper.sh
+   80  ls
+   81  vim getopenkm.sh
+   82  ls
+   83  git add oldscan.sh wraoper.sh a getopenkm.sh 
+   84  git add oldscan.sh wraoper.sh  getopenkm.sh 
+   85  sh getopenkm.sh 
+   86  ls
+   87  mv download ../
+   88  cd ..
+   89  ls
+   90  df
+   91  ls -la
+   92  mv download download.run
+   93  mv download.run openkm.run
+   94  chmod +x openkm.run 
+   95  ls
+   96  ./openkm.run 
+   97  cd scanthingy/
+   98  ls
+   99  vim getopenkm.sh 
+  100  sh getopenkm.sh 
+  101  vim getopenkm.sh 
+  102  ls -la
+  103  rm download 
+  104  cd ..
+  105  ls
+  106  rm openkm*
+  107  ls
+  108  cd scanthingy/
+  109  ls
+  110  sh getopenkm.sh 
+  111  cd
+  112  ls
+  113  mc
+  114  sudo apt-get install mc
+  115  mc
+  116  ls
+  117  unzip openkmtomcat.zip 
+  118  cd
+  119  ls
+  120  cd scanthingy/
+  121  ls
+  122  vim getopenkm.sh 
+  123  git commit -a -m "dkms downloads"
+  124  sh getopenkm.sh 
+  125  ls
+  126  mv owncloud-9.1.1.zip ..
+  127  cd ..
+  128  ls
+  129  unzip owncloud-9.1.1.zip 
+  130  sudo apt-get install apache
+  131  sudo apt-get install php
+  132  sudo apt-get install php mysql-server
+  133  sudo apt-get install mysql-server
+  134  "sudo apt-get install mysql-server" >>scanthingy/history.txt 
+  135  echo "sudo apt-get install mysql-server" >>scanthingy/history.txt 
+  136  sudo apt-get install apache
+  137  sudo apt-get install httpd
+  138  sudo apt-get install nginx
+  139  echo "sudo apt-get install nginx" >>scanthingy/history.txt 
+  140  sudo "apt-get install php"
+  141  sudo apt-get install php
+  142  sudo apt-get -s install php*
+  143  sudo apt-get -s install php5
+  144  sudo apt-get install php5-fpm
+  145  echo "sudo apt-get install php5-fpm" >>scanthingy/history.txt 
+  146  ls
+  147  cd /var/
+  148  ls
+  149  cd www
+  150  ls
+  151  cd html/
+  152  ls
+  153  cd ..
+  154  mv /home/pi/owncloud .
+  155  sudo mv /home/pi/owncloud .
+  156  ls -la
+  157  sudo bash
+  158  cd
+  159  ls
+  160  history >scanthingy/history2.txt
+sudo apt-get install php5-gd php5-mysql php5-curl 
