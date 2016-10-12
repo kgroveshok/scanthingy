@@ -14,7 +14,8 @@
 #mv download ../openkmwar.zip
 
 
+
 # owncloud
-wget https://download.owncloud.org/community/owncloud-9.1.1.zip
+wget --no-check-certificate https://download.owncloud.org/community/owncloud-9.1.1.zip
 
 
