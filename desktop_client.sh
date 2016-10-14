@@ -90,7 +90,7 @@ while [[ 1 ]] ; do
 
 		echo "Tiff to PDF"
 		tiffcp scan-*.tiff scanfull.tiff
-		tiff2pdf scanfull.tiff -o "$DEFT.pdf" -t "$DEFT" -k "$PDFKEYWORDS"
+		tiff2pdf scanfull.tiff -z -o "$DEFT.pdf" -t "$DEFT" -k "$PDFKEYWORDS"
 		echo "Create Tar"
 		rm -fv "$SCANHOME/$DEFC-$DEFT.tar"
 		tar cvf "$SCANHOME/$DEFC-$DEFT.tar" "$SCANHOME/$DEFC/$DEFT"
