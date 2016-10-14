@@ -68,9 +68,8 @@ while [[ 1 ]] ; do
 
 		cd "$SCANHOME/$DEFC/$DEFT"
 
-		echo "Tiff to PDF"
-		tiffcp scan-*.tiff scanfull.tiff
-		tiff2pdf scanfull.tiff -o "$DEFT.pdf" -t "$DEFT"
+
+		PDFKEYWORDS=""
 
 		if [[ $RES -eq 3 ]] ; then
 			echo "Tesseract OCR"
@@ -82,8 +81,16 @@ while [[ 1 ]] ; do
 			# crap tesseract scan-$f.tiff -psm 5 -l eng  scan-text5-$f.txt 
 			tesseract scan-$f.tiff  -c load_system_dawg=false -c load_freq_dawg=false   -psm 6 -l eng  scan-text6-$f.txt 
 			# crap tesseract scan-$f.tiff -psm 7 -l eng  scan-text7-$f.txt 
+			# conslidate all keywords for the PDF
+
+			PDFKEYWORDS=`cat scan-text*.txt`
 		fi
 
+		# create/update the pdf and include all of the ocr text (if any in the pdf for searching)
+
+		echo "Tiff to PDF"
+		tiffcp scan-*.tiff scanfull.tiff
+		tiff2pdf scanfull.tiff -o "$DEFT.pdf" -t "$DEFT" -k "$PDFKEYWORDS"
 		echo "Create Tar"
 		rm -fv "$SCANHOME/$DEFC-$DEFT.tar"
 		tar cvf "$SCANHOME/$DEFC-$DEFT.tar" "$SCANHOME/$DEFC/$DEFT"
