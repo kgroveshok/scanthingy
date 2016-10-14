@@ -4,7 +4,7 @@
 # file name
 
 #f=`date +%s`
-f=`date +%Y%M%d-%H%m%S`
+f=`date +%Y%m%d-%H%M%S`
 
 echo $f
 
