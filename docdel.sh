@@ -42,3 +42,7 @@ echo "Tiff to PDF"
 tiffcp scan-*.tiff scanfull.tiff
 tiff2pdf scanfull.tiff -o scanfull.pdf -t "$DEFT"
 
+echo "Create Tar"
+rm -fv "/tmp/scanner/$DEFT.tar"
+tar cvf "/tmp/scanner/$DEFT.tar" "/tmp/scanner/$DEFT"
+ 
