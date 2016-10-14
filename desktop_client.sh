@@ -69,7 +69,7 @@ while [[ 1 ]] ; do
 		cd "$SCANHOME/$DEFC/$DEFT"
 
 		echo "Tiff to PDF"
-		tiffcp scan-*.tiff "$DEFT.tiff"
+		tiffcp scan-*.tiff scanfull.tiff
 		tiff2pdf scanfull.tiff -o "$DEFT.pdf" -t "$DEFT"
 
 		if [[ $RES -eq 3 ]] ; then
