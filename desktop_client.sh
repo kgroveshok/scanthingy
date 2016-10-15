@@ -1,15 +1,16 @@
 #!/bin/bash
 
-
-# on run
-#  select if single sheet or multi sheet
-#  if single sheet
-#    prompt for classification and title then scan
 #
-# if multi sheet
-#   prompt for classificatino and title then create dir 
-#   scan page
-#   prompt for enter or space to do next or another any other key to exit
+#
+# TODO menu
+# TODO  scaner
+# TODO  photo copy
+# TODO  ocr
+
+# TODO to split to functions
+# TODO start scan
+# TODO start OCR for given scan image
+# TODO turn scans to final tiff and pdf
 
 SCANHOME=~/Documents/Scanner
 
