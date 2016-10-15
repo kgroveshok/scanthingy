@@ -1,6 +1,6 @@
 #!/bin/sh
     
-sudo apt-get install imagemagick  sane libtiff* libjpeg-dev vim mc mysql-server scanbuttond git php5 apache2 libapache2-mod-php5 libtool automake 
+sudo apt-get install imagemagick  sane libtiff* libjpeg-dev vim mc mysql-server scanbuttond git php5 apache2 libapache2-mod-php5 libtool automake samba
 
 cd 
 git clone git@github.com:kgroveshok/scanthingy.git
