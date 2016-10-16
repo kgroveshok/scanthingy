@@ -190,10 +190,33 @@ function packageall {
 
 
 }
+
+function copier {
+	
+		dialog --inputbox "How many copies?" 8 5 "1" 2>/tmp/copies.txt
+	
+		echo "Scanning"
+		scanimage -p -x 215 -y 297 --format tiff --resolution 150 --mode Gray >/tmp/copier.tiff
+		tiff2pdf /tmp/copier.tiff -z -o /tmp/copier.pdf
+	
+		echo "Printing"
+	
+		T=`cat /tmp/copies.txt`
+		C=1
+
+		while [[ $C -le $T ]] ; do
+			echo "Copy $C"
+			lpr /tmp/copier.pdf
+			C=$((C+1))
+		done	
+			
+}
+
+
 # main menu
 
 while [[ 1 ]] ; do
-	dialog --menu "Main Menu" 15 35 5 "S" "Scanner" "C" "Copier (TODO)" "O" "OCR All New Scans" "F" "Re-OCR All Scans (TODO)" "P" "Repackage all PDFs" 2>/tmp/scanmenu
+	dialog --menu "Main Menu" 15 35 5 "S" "Scanner" "C" "Photocopy" "O" "OCR All New Scans" "F" "Re-OCR All Scans (TODO)" "P" "Repackage all PDFs" 2>/tmp/scanmenu
 
 	if [[ $? -ne 0 ]] ; then
 		exit
@@ -205,6 +228,9 @@ while [[ 1 ]] ; do
 	fi
 	if [[ "$MENOPT" = "O" ]] ; then
 		ocrall
+	fi
+	if [[ "$MENOPT" = "C" ]] ; then
+		copier
 	fi
 	if [[ "$MENOPT" = "P" ]] ; then
 		packageall
