@@ -306,13 +306,16 @@ function copier {
 # main menu
 
 while [[ 1 ]] ; do
-	dialog --menu "Main Menu" 15 35 8 "S" "Scanner" "A" "Auto-scanner" "C" "Photocopy" "O" "OCR All new scans" "F" "Re-OCR all scans (TODO)" "P" "Repackage all PDFs" "L" "Classify Auto-scanner" 2>/tmp/scanmenu
+	dialog --menu "Main Menu" 15 35 8 "S" "Scanner" "A" "Auto-scanner" "C" "Photocopy" "O" "OCR All new scans" "F" "Re-OCR all scans (TODO)" "P" "Repackage all PDFs" "L" "Classify Auto-scanner" "E" "Edit classifer patterns" 2>/tmp/scanmenu
 
 	if [[ $? -ne 0 ]] ; then
 		exit
 	fi
 	MENOPT=`cat /tmp/scanmenu`
 
+	if [[ "$MENOPT" = "E" ]] ; then
+		vim ~/Documents/Scanner/.scanregex 
+	fi
 	if [[ "$MENOPT" = "L" ]] ; then
 		classifyauto
 	fi
