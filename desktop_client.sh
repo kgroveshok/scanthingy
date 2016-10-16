@@ -60,6 +60,42 @@ function packtopdf  {
 	tiff2pdf scanfull.tiff -z -o "$title.pdf" -t "$title" -k "$PDFKEYWORDS"
 }
 
+function autoscanner {
+SCANHOME=~/Documents/Scanner
+
+mkdir -p $SCANHOME
+
+
+dialog --inputbox "DPI?" 8 5 "100" 2>/tmp/dpi.txt
+
+
+DEFT="Auto"
+DEFC="Default"
+
+DEFD=`cat /tmp/dpi.txt`
+
+if [[ -z "$DEFD" ]] ; then
+	DEFD="100"
+fi
+
+while [[ 1 ]] ; do
+
+
+	mkdir -p "$SCANHOME/$DEFC/$DEFT"
+
+	f=`date +%Y%m%d-%H%M%S`
+
+	dialog --infobox "Continuous $DEFD DPI scan until ctrl-c to Default/Auto $f" 15 45 
+
+	scanimage -p -x 215 -y 297 --format tiff --resolution $DEFD --mode Color >"/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff"  
+
+	if [[ $? -ne 0 ]] ; then
+		return
+	fi	
+
+
+done
+}
 function scanner {
 SCANHOME=~/Documents/Scanner
 
@@ -225,13 +261,16 @@ function copier {
 # main menu
 
 while [[ 1 ]] ; do
-	dialog --menu "Main Menu" 15 35 5 "S" "Scanner" "C" "Photocopy" "O" "OCR All new scans" "F" "Re-OCR all scans (TODO)" "P" "Repackage all PDFs" 2>/tmp/scanmenu
+	dialog --menu "Main Menu" 15 35 8 "S" "Scanner" "A" "Auto-scanner" "C" "Photocopy" "O" "OCR All new scans" "F" "Re-OCR all scans (TODO)" "P" "Repackage all PDFs" 2>/tmp/scanmenu
 
 	if [[ $? -ne 0 ]] ; then
 		exit
 	fi
 	MENOPT=`cat /tmp/scanmenu`
 
+	if [[ "$MENOPT" = "A" ]] ; then
+		autoscanner
+	fi
 	if [[ "$MENOPT" = "S" ]] ; then
 		scanner
 	fi
