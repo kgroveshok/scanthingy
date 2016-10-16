@@ -81,7 +81,7 @@ while [[ 1 ]] ; do
 
 
 
-	dialog --extra-button --extra-label "With OCR" --form "Scan New Document or Continue Adding" 15 45 8 "Title" 2 2 "$DEFT" 2 10 25  25 "Category" 4 2 "$DEFC" 4 12 15 15 "DPI" 6 2 "$DEFD" 6 10 5 5   2>$SCANHOME/.scan
+	dialog --extra-button --extra-label "With OCR" --form "Scan new document or appending to..." 15 45 8 "Title" 2 2 "$DEFT" 2 10 25  25 "Category" 4 2 "$DEFC" 4 12 15 15 "DPI" 6 2 "$DEFD" 6 10 5 5   2>$SCANHOME/.scan
 
 	RES=$?
 
@@ -100,6 +100,9 @@ while [[ 1 ]] ; do
 		if [[ -z $DEFC ]] ; then
 			DEFC="Default"
 		fi
+		if [[ -z $DEFT ]] ; then
+			DEFT="Misc"
+		fi
 		cat <<-EOF >$SCANHOME/.scan
 		$DEFT
 		$DEFC
@@ -110,7 +113,7 @@ while [[ 1 ]] ; do
 
 		f=`date +%Y%m%d-%H%M%S`
 
-		echo "Scanning"
+		echo "Scanning into $DEFC/$DEFT"
 
 		scanimage -p -x 215 -y 297 --format tiff --resolution $DEFD --mode Color >"/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff" 
 
@@ -124,6 +127,12 @@ while [[ 1 ]] ; do
 			ocr "$SCANHOME/$DEFC/$DEFT/scan-$f.tiff"
 			#PDFKEYWORDS=`cat scan-text*.txt`
 		fi
+
+
+		# pause incase want to do anything before packing up images
+
+		dialog --msgbox "Scan done, pausing before packaging to PDF" 8 30
+
 
 		# create/update the pdf and include all of the ocr text (if any in the pdf for searching)
 
@@ -216,7 +225,7 @@ function copier {
 # main menu
 
 while [[ 1 ]] ; do
-	dialog --menu "Main Menu" 15 35 5 "S" "Scanner" "C" "Photocopy" "O" "OCR All New Scans" "F" "Re-OCR All Scans (TODO)" "P" "Repackage all PDFs" 2>/tmp/scanmenu
+	dialog --menu "Main Menu" 15 35 5 "S" "Scanner" "C" "Photocopy" "O" "OCR All new scans" "F" "Re-OCR all scans (TODO)" "P" "Repackage all PDFs" 2>/tmp/scanmenu
 
 	if [[ $? -ne 0 ]] ; then
 		exit
