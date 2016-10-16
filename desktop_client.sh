@@ -239,20 +239,20 @@ function classifyauto {
 		# lookup any matching regexs
 
 		cat $REGEX | ( while read l ; do
-			echo "Scan line $l"
+			#echo "Scan line $l"
 			PATTERN=`echo $l | cut -f1 -d'~'`
 			RELDIR=`echo $l | cut -f2 -d'~'`
 			NEWTITLE=`echo "$PATTERN" | sed 's/ /_/g'`
 			if [[ -a "$f.ocr.txt" ]] ; then
-			grep -i "$PATTERN" "$f.ocr.txt" -c
+				grep -i "$PATTERN" "$f.ocr.txt" -c >/dev/null
 
-			if [[ $? -eq 0 ]] ; then
-				mkdir -p "$SCANHOME/$RELDIR/$NEWTITLE"
-i				echo "Found match moving file to $RELDIR /$NEWTITLE"
-				mv "$f.tiff" "$SCANHOME/$RELDIR/$NEWTITLE"
-				mv "$f.ocr.txt" "$SCANHOME/$RELDIR/$NEWTITLE"
+				if [[ $? -eq 0 ]] ; then
+					mkdir -p "$SCANHOME/$RELDIR/$NEWTITLE"
+					echo "Found match moving file to $RELDIR /$NEWTITLE"
+					mv "$SCANHOME/$f" "$SCANHOME/$RELDIR/$NEWTITLE"
+					mv "$SCANHOME/$f.ocr.txt" "$SCANHOME/$RELDIR/$NEWTITLE"
 
-			fi
+				fi
 			fi
 		done 	)	
 
