@@ -10,7 +10,7 @@ function ocr {
 	#cd `basedir $1`
 	
 	tesseract "$1" -c load_system_dawg=false -c load_freq_dawg=false   -psm 1 -l eng  "$1.text1"
-	tesseract "$1"  -c load_system_dawg=false -c load_freq_dawg=false  -psm 2 -l eng  "$1.text2"
+	#tesseract "$1"  -c load_system_dawg=false -c load_freq_dawg=false  -psm 2 -l eng  "$1.text2"i
 	tesseract "$1"  -c load_system_dawg=false -c load_freq_dawg=false   -psm 3 -l eng  "$1.text3"
 	tesseract "$1"  -c load_system_dawg=false -c load_freq_dawg=false   -psm 4 -l eng  "$1.text4"
 	# crap tesseract scan-$f.tiff -psm 5 -l eng  scan-text5-$f.txt 
@@ -18,9 +18,9 @@ function ocr {
 
 	# put all in a single text file for ease
 
-	cat "$1.text1.txt" "$1.text2.txt" "$1.text3.txt" "$1.text4.txt" "$1.text6.txt" >"$1.ocr.txt"
+	cat "$1.text1.txt" "$1.text3.txt" "$1.text4.txt" "$1.text6.txt" >"$1.ocr.txt"
 
-	rm  "$1.text1.txt" "$1.text2.txt" "$1.text3.txt" "$1.text4.txt" "$1.text6.txt"
+	rm  "$1.text1.txt" "$1.text3.txt" "$1.text4.txt" "$1.text6.txt"
 			# crap tesseract scan-$f.tiff -psm 7 -l eng  scan-text7-$f.txt 
 }
 
