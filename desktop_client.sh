@@ -78,6 +78,8 @@ if [[ -z "$DEFD" ]] ; then
 	DEFD="100"
 fi
 
+PAGE=1
+
 while [[ 1 ]] ; do
 
 
@@ -85,11 +87,17 @@ while [[ 1 ]] ; do
 
 	f=`date +%Y%m%d-%H%M%S`
 
-	dialog --infobox "Continuous $DEFD DPI scan until ctrl-c to Default/Auto $f" 15 45 
+	dialog --infobox "Page $PAGE: Continuous $DEFD DPI scan until ctrl-c to Default/Auto $f" 15 45 
 
 	scanimage -p -x 215 -y 297 --format tiff --resolution $DEFD --mode Color >"/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff"  
 
-
+	sleep 5
+	if [[ -s "/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff" ]]; then
+		PAGE=$((PAGE+1))
+	else
+		
+		rm  "/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff"
+	fi
 
 done
 }
