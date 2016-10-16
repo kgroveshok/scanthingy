@@ -171,10 +171,29 @@ function ocrall {
 
 }
 
+function packageall {
+	# TODO pass if new or reocr all
+	# 0=all 1=new
+	SCANHOME=~/Documents/Scanner
+	
+	cd $SCANHOME
+	for f in `find . -name scan-*.tiff | sed 's/ /~/g'` ; do
+
+		f=`echo $f | sed 's/~/ /g'`
+
+		echo "Packing for image $f"
+
+		packtopdf "$SCANHOME/$f"
+		
+
+	done
+
+
+}
 # main menu
 
 while [[ 1 ]] ; do
-	dialog --menu "Main Menu" 15 25 5 "S" "Scanner" "C" "Copier (TODO)" "O" "OCR All New Scans" "F" "Re-OCR All Scans (TODO)"  2>/tmp/scanmenu
+	dialog --menu "Main Menu" 15 25 5 "S" "Scanner" "C" "Copier (TODO)" "O" "OCR All New Scans" "F" "Re-OCR All Scans (TODO)" "P Repackage all PDFs" 2>/tmp/scanmenu
 
 	if [[ $? -ne 0 ]] ; then
 		exit
@@ -186,6 +205,9 @@ while [[ 1 ]] ; do
 	fi
 	if [[ "$MENOPT" = "O" ]] ; then
 		ocrall
+	fi
+	if [[ "$MENOPT" = "P" ]] ; then
+		packageall
 	fi
 done
 
