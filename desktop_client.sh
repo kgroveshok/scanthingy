@@ -193,7 +193,7 @@ function packageall {
 # main menu
 
 while [[ 1 ]] ; do
-	dialog --menu "Main Menu" 15 25 5 "S" "Scanner" "C" "Copier (TODO)" "O" "OCR All New Scans" "F" "Re-OCR All Scans (TODO)" "P" "Repackage all PDFs" 2>/tmp/scanmenu
+	dialog --menu "Main Menu" 15 35 5 "S" "Scanner" "C" "Copier (TODO)" "O" "OCR All New Scans" "F" "Re-OCR All Scans (TODO)" "P" "Repackage all PDFs" 2>/tmp/scanmenu
 
 	if [[ $? -ne 0 ]] ; then
 		exit
