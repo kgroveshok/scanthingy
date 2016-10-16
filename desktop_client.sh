@@ -89,9 +89,6 @@ while [[ 1 ]] ; do
 
 	scanimage -p -x 215 -y 297 --format tiff --resolution $DEFD --mode Color >"/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff"  
 
-	if [[ $? -ne 0 ]] ; then
-		return
-	fi	
 
 
 done
