@@ -213,6 +213,54 @@ function ocrall {
 
 }
 
+function classifyauto {
+	# Classify all auto scanned documents via regex on ocr 
+	
+	SCANHOME=~/Documents/Scanner/Default/Auto
+	
+	REGEX=~/Documents/Scanner/.scanregex 
+
+	cd $SCANHOME
+	for f in `ls scan-*.tiff` ; do
+
+		f=`echo $f | sed 's/~/ /g'`
+
+		# first ensure all files are OCR'd
+	
+		echo "Checking image $f"
+
+		if [[ -a "$f.ocr.txt" ]] ; then
+			echo " ... ignoring already done OCR"
+		else
+			echo " ... need to OCR"
+			ocr "$SCANHOME/$f"
+		fi
+		
+		# lookup any matching regexs
+
+		cat $REGEX | ( while read l ; do
+			echo "Scan line $l"
+			PATTERN=`echo $l | cut -f1 -d'~'`
+			RELDIR=`echo $l | cut -f2 -d'~'`
+			NEWTITLE=`echo "$PATTERN" | sed 's/ /_/g'`
+			if [[ -a "$f.ocr.txt" ]] ; then
+			grep -i "$PATTERN" "$f.ocr.txt" -c
+
+			if [[ $? -eq 0 ]] ; then
+				mkdir -p "$SCANHOME/$RELDIR/$NEWTITLE"
+i				echo "Found match moving file to $RELDIR /$NEWTITLE"
+				mv "$f.tiff" "$SCANHOME/$RELDIR/$NEWTITLE"
+				mv "$f.ocr.txt" "$SCANHOME/$RELDIR/$NEWTITLE"
+
+			fi
+			fi
+		done 	)	
+
+	done
+
+exit
+
+}
 function packageall {
 	# TODO pass if new or reocr all
 	# 0=all 1=new
@@ -258,13 +306,16 @@ function copier {
 # main menu
 
 while [[ 1 ]] ; do
-	dialog --menu "Main Menu" 15 35 8 "S" "Scanner" "A" "Auto-scanner" "C" "Photocopy" "O" "OCR All new scans" "F" "Re-OCR all scans (TODO)" "P" "Repackage all PDFs" 2>/tmp/scanmenu
+	dialog --menu "Main Menu" 15 35 8 "S" "Scanner" "A" "Auto-scanner" "C" "Photocopy" "O" "OCR All new scans" "F" "Re-OCR all scans (TODO)" "P" "Repackage all PDFs" "L" "Classify Auto-scanner" 2>/tmp/scanmenu
 
 	if [[ $? -ne 0 ]] ; then
 		exit
 	fi
 	MENOPT=`cat /tmp/scanmenu`
 
+	if [[ "$MENOPT" = "L" ]] ; then
+		classifyauto
+	fi
 	if [[ "$MENOPT" = "A" ]] ; then
 		autoscanner
 	fi
