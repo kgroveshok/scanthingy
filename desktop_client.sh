@@ -266,7 +266,6 @@ function classifyauto {
 
 	done
 
-exit
 
 }
 function packageall {
