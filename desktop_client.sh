@@ -8,13 +8,17 @@ function ocr {
 	echo "Tesseract OCR"
 	
 	#cd `basedir $1`
+
+	dirname "$1"
+
+  	convert "$1" -sharpen 10x35 /dev/shm/toocr.tiff
 	
-	tesseract "$1" -c load_system_dawg=false -c load_freq_dawg=false   -psm 1 -l eng  "$1.text1"
+	tesseract /dev/shm/toocr.tiff -c load_system_dawg=false -c load_freq_dawg=false   -psm 1 -l eng  "$1.text1"
 	#tesseract "$1"  -c load_system_dawg=false -c load_freq_dawg=false  -psm 2 -l eng  "$1.text2"i
-	tesseract "$1"  -c load_system_dawg=false -c load_freq_dawg=false   -psm 3 -l eng  "$1.text3"
-	tesseract "$1"  -c load_system_dawg=false -c load_freq_dawg=false   -psm 4 -l eng  "$1.text4"
+	tesseract /dev/shm/toocr.tiff  -c load_system_dawg=false -c load_freq_dawg=false   -psm 3 -l eng  "$1.text3"
+	tesseract /dev/shm/toocr.tiff  -c load_system_dawg=false -c load_freq_dawg=false   -psm 4 -l eng  "$1.text4"
 	# crap tesseract scan-$f.tiff -psm 5 -l eng  scan-text5-$f.txt 
-	tesseract "$1"  -c load_system_dawg=false -c load_freq_dawg=false   -psm 6 -l eng  "$1.text6"
+	tesseract /dev/shm/toocr.tiff  -c load_system_dawg=false -c load_freq_dawg=false   -psm 6 -l eng  "$1.text6"
 
 	# put all in a single text file for ease
 
