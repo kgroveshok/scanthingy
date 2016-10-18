@@ -11,7 +11,9 @@ function ocr {
 
 	dirname "$1"
 
-  	convert "$1" -sharpen 10x35 /dev/shm/toocr.tiff
+	#threshold seems better than sharpen
+  	#convert "$1" -sharpen 10x35 /dev/shm/toocr.tiff
+	convert "$1" -threshold 20% /dev/shm/toocr.tiff
 	
 	tesseract /dev/shm/toocr.tiff -c load_system_dawg=false -c load_freq_dawg=false   -psm 1 -l eng  "$1.text1"
 	#tesseract "$1"  -c load_system_dawg=false -c load_freq_dawg=false  -psm 2 -l eng  "$1.text2"i
