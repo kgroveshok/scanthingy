@@ -16,6 +16,13 @@ function ocr {
 	#convert "$1" -threshold 20% /dev/shm/toocr.tiff
 	#level seems better
 	convert "$1" -level 15x85% /dev/shm/toocr.tiff
+
+	if [[ -n "$2" ]] ; then
+		#second item is a mask to apply if given
+		convert "$1" "$2" --composite /dev/shm/toocr2.tiff
+		mv /dev/shm/toocr2.tiff /dev/shm/toocr.tiff
+	fi
+
 	
 	tesseract /dev/shm/toocr.tiff -c load_system_dawg=false -c load_freq_dawg=false   -psm 1 -l eng  "$1.text1"
 	#tesseract "$1"  -c load_system_dawg=false -c load_freq_dawg=false  -psm 2 -l eng  "$1.text2"i
@@ -269,6 +276,7 @@ function classifyauto {
 			#echo "Scan line $l"
 			PATTERN=`echo $l | cut -f1 -d'~'`
 			RELDIR=`echo $l | cut -f2 -d'~'`
+			MASK=`echo $l | cut -f3 -d'~'`
 			NEWTITLE=`echo "$PATTERN" | sed 's/ /_/g'`
 			if [[ -a "$f.ocr.txt" ]] ; then
 				grep -i "$PATTERN" "$f.ocr.txt" -c >/dev/null
@@ -276,8 +284,15 @@ function classifyauto {
 				if [[ $? -eq 0 ]] ; then
 					mkdir -p "$SCANHOME/$RELDIR/$NEWTITLE"
 					echo "Found match moving file to $RELDIR /$NEWTITLE"
+
+					if [[ -n "$MASK" ]] ; then
+						echo "Repply ocr but with mask"
+						ocr "$SCANHOME/$f" "$MASK"
+					fi
+
 					mv "$SCANHOME/$f" "$SCANHOME/$RELDIR/$NEWTITLE"
 					mv "$SCANHOME/$f.ocr.txt" "$SCANHOME/$RELDIR/$NEWTITLE"
+
 
 				fi
 			fi
