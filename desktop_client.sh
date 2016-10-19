@@ -180,13 +180,13 @@ while [[ 1 ]] ; do
 
 		# pause incase want to do anything before packing up images
 
-		$MENU --msgbox "Scan done, pausing before packaging to PDF" 8 30
+		$MENU --yesno "Scan done, pausing before packaging to PDF" 8 30
 
+		if [[ $? -eq 0 ]] ; then
+			# create/update the pdf and include all of the ocr text (if any in the pdf for searching)
 
-		# create/update the pdf and include all of the ocr text (if any in the pdf for searching)
-
-		packtopdf "$SCANHOME" "$DEFC" "$DEFT"
-
+			packtopdf "$SCANHOME" "$DEFC" "$DEFT"
+		fi
 		#echo "Create Tar"
 		#rm -fv "$SCANHOME/$DEFC-$DEFT.tar"
 		#tar cvf "$SCANHOME/$DEFC-$DEFT.tar" "$SCANHOME/$DEFC/$DEFT"
