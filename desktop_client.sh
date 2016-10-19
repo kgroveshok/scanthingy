@@ -17,25 +17,33 @@ function ocr {
 	#level seems better
 	convert "$1" -level 15x85% /dev/shm/toocr.tiff
 
+	EXTRA=""
+
 	if [[ -n "$2" ]] ; then
 		#second item is a mask to apply if given
-		convert "$1" "$2" --composite /dev/shm/toocr2.tiff
+		echo "Applying mask"
+		convert "$1" "$2" -composite /dev/shm/toocr2.tiff
 		mv /dev/shm/toocr2.tiff /dev/shm/toocr.tiff
+		EXTRA=".masked"
 	fi
 
-	
-	tesseract /dev/shm/toocr.tiff -c load_system_dawg=false -c load_freq_dawg=false   -psm 1 -l eng  "$1.text1"
+	echo "."	
+	tesseract /dev/shm/toocr.tiff -c load_system_dawg=false -c load_freq_dawg=false   -psm 1 -l eng  "$1$EXTRA.text1" >/dev/null 2>&1 
 	#tesseract "$1"  -c load_system_dawg=false -c load_freq_dawg=false  -psm 2 -l eng  "$1.text2"i
-	tesseract /dev/shm/toocr.tiff  -c load_system_dawg=false -c load_freq_dawg=false   -psm 3 -l eng  "$1.text3"
-	tesseract /dev/shm/toocr.tiff  -c load_system_dawg=false -c load_freq_dawg=false   -psm 4 -l eng  "$1.text4"
+	echo "."	
+	tesseract /dev/shm/toocr.tiff  -c load_system_dawg=false -c load_freq_dawg=false   -psm 3 -l eng  "$1$EXTRA.text3" >/dev/null 2>&1
+	echo "."	
+	tesseract /dev/shm/toocr.tiff  -c load_system_dawg=false -c load_freq_dawg=false   -psm 4 -l eng  "$1$EXTRA.text4" >/dev/null 2>&1
+	echo "."	
 	# crap tesseract scan-$f.tiff -psm 5 -l eng  scan-text5-$f.txt 
-	tesseract /dev/shm/toocr.tiff  -c load_system_dawg=false -c load_freq_dawg=false   -psm 6 -l eng  "$1.text6"
+	tesseract /dev/shm/toocr.tiff  -c load_system_dawg=false -c load_freq_dawg=false   -psm 6 -l eng  "$1$EXTRA.text6" >/dev/null 2>&1
+	echo "."	
 
 	# put all in a single text file for ease
 
-	cat "$1.text1.txt" "$1.text3.txt" "$1.text4.txt" "$1.text6.txt" >"$1.ocr.txt"
+	cat "$1$EXTRA.text1.txt" "$1$EXTRA.text3.txt" "$1$EXTRA.text4.txt" "$1$EXTRA.text6.txt" >"$1$EXTRA.ocr.txt"
 
-	rm  "$1.text1.txt" "$1.text3.txt" "$1.text4.txt" "$1.text6.txt"
+	rm  "$1$EXTRA.text1.txt" "$1$EXTRA.text3.txt" "$1$EXTRA.text4.txt" "$1$EXTRA.text6.txt"
 			# crap tesseract scan-$f.tiff -psm 7 -l eng  scan-text7-$f.txt 
 }
 
@@ -251,6 +259,7 @@ function classifyauto {
 	# Classify all auto scanned documents via regex on ocr 
 	
 	SCANHOME=~/Documents/Scanner/Default/Auto
+	MASKHOME=~/Documents/Scanner/Masks
 	
 	REGEX=~/Documents/Scanner/.scanregex 
 
@@ -287,12 +296,14 @@ function classifyauto {
 
 					if [[ -n "$MASK" ]] ; then
 						echo "Repply ocr but with mask"
-						ocr "$SCANHOME/$f" "$MASK"
+						ocr "$SCANHOME/$f" "$MASKHOME/$MASK"
 					fi
 
 					mv "$SCANHOME/$f" "$SCANHOME/$RELDIR/$NEWTITLE"
 					mv "$SCANHOME/$f.ocr.txt" "$SCANHOME/$RELDIR/$NEWTITLE"
-
+					if [[ -a "$SCANHOME/$f.masked.ocr.txt" ]] ; then
+						mv "$SCANHOME/$f.masked.ocr.txt" "$SCANHOME/$RELDIR/$NEWTITLE"
+					fi
 
 				fi
 			fi
