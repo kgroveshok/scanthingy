@@ -76,6 +76,13 @@ mkdir -p $SCANHOME
 
 $MENU --inputbox "DPI?" 8 5 "100" 2>/tmp/dpi.txt
 
+$MENU --yesno "Pause after each page?" 8 30
+
+if [[ $? -eq 0 ]] ; then
+DOPAUSE=1
+else
+DOPAUSE=0
+fi
 
 DEFT="Auto"
 DEFC="Default"
@@ -99,7 +106,11 @@ while [[ 1 ]] ; do
 
 	scanimage -p -x 215 -y 297 --format tiff --resolution $DEFD --mode Color >"/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff"  
 
-	sleep 5
+		if [[ $DOPAUSE -eq 1 ]] ; then
+			$MENU --yesno "Ready for next?" 8 30
+		else
+			sleep 5
+		fi
 	if [[ -s "/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff" ]]; then
 		PAGE=$((PAGE+1))
 	else
