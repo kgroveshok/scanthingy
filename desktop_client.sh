@@ -74,7 +74,7 @@ SCANHOME=~/Documents/Scanner
 mkdir -p $SCANHOME
 
 
-dialog --inputbox "DPI?" 8 5 "100" 2>/tmp/dpi.txt
+$MENU --inputbox "DPI?" 8 5 "100" 2>/tmp/dpi.txt
 
 
 DEFT="Auto"
@@ -95,7 +95,7 @@ while [[ 1 ]] ; do
 
 	f=`date +%Y%m%d-%H%M%S`
 
-	dialog --infobox "Page $PAGE: Continuous $DEFD DPI scan until ctrl-c to Default/Auto $f" 15 45 
+	$MENU --infobox "Page $PAGE: Continuous $DEFD DPI scan until ctrl-c to Default/Auto $f" 15 45 
 
 	scanimage -p -x 215 -y 297 --format tiff --resolution $DEFD --mode Color >"/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff"  
 
@@ -130,7 +130,7 @@ while [[ 1 ]] ; do
 
 
 
-	dialog --extra-button --extra-label "With OCR" --form "Scan new document or appending to..." 15 45 8 "Title" 2 2 "$DEFT" 2 10 25  25 "Category" 4 2 "$DEFC" 4 12 15 15 "DPI" 6 2 "$DEFD" 6 10 5 5   2>$SCANHOME/.scan
+	$MENU --extra-button --extra-label "With OCR" --form "Scan new document or appending to..." 15 45 8 "Title" 2 2 "$DEFT" 2 10 25  25 "Category" 4 2 "$DEFC" 4 12 15 15 "DPI" 6 2 "$DEFD" 6 10 5 5   2>$SCANHOME/.scan
 
 	RES=$?
 
@@ -180,7 +180,7 @@ while [[ 1 ]] ; do
 
 		# pause incase want to do anything before packing up images
 
-		dialog --msgbox "Scan done, pausing before packaging to PDF" 8 30
+		$MENU --msgbox "Scan done, pausing before packaging to PDF" 8 30
 
 
 		# create/update the pdf and include all of the ocr text (if any in the pdf for searching)
@@ -298,7 +298,7 @@ function packageall {
 
 function copier {
 	
-		dialog --inputbox "How many copies?" 8 5 "1" 2>/tmp/copies.txt
+		$MENU --inputbox "How many copies?" 8 5 "1" 2>/tmp/copies.txt
 	
 		echo "Scanning"
 		scanimage -p -x 215 -y 297 --format tiff --resolution 150 --mode Gray >/tmp/copier.tiff
@@ -317,11 +317,18 @@ function copier {
 			
 }
 
+MENU=dialog
+
+if [[ -n "$DISPLAY" ]] ; then
+	# notquite compat with dialog
+	#MENU=zenity
+	echo
+fi
 
 # main menu
 
 while [[ 1 ]] ; do
-	dialog --menu "Main Menu" 15 35 8 "S" "Scanner" "A" "Auto-scanner" "C" "Photocopy" "O" "OCR All new scans" "F" "Re-OCR all scans (TODO)" "P" "Repackage all PDFs" "L" "Classify Auto-scanner" "E" "Edit classifer patterns" 2>/tmp/scanmenu
+	$MENU --menu "Main Menu" 15 35 8 "S" "Scanner" "A" "Auto-scanner" "C" "Photocopy" "O" "OCR All new scans" "F" "Re-OCR all scans (TODO)" "P" "Repackage all PDFs" "L" "Classify Auto-scanner" "E" "Edit classifer patterns" 2>/tmp/scanmenu
 
 	if [[ $? -ne 0 ]] ; then
 		exit
