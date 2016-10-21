@@ -28,3 +28,10 @@ Then use desktop_client.sh to fire up the menu and get scanning :-)
 This was originally designed for running on my PI and I used (and included some config files to help) the following website:
 
 CUPS config based on https://samhobbs.co.uk/2014/07/raspberry-pi-print-scanner-server
+
+
+# TODO
+
+On repackage PDF, only rebuild if any files are newer than the existing PDF
+
+
