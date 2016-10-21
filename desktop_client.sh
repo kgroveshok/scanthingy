@@ -84,7 +84,7 @@ function packtopdf  {
 }
 
 function autoscanner {
-SCANHOME=~/Documents/Scanner
+SCANHOME=$SCANDOCS
 
 mkdir -p $SCANHOME
 
@@ -136,7 +136,7 @@ while [[ 1 ]] ; do
 done
 }
 function scanner {
-SCANHOME=~/Documents/Scanner
+SCANHOME=$SCANDOCS
 
 mkdir -p $SCANHOME
 
@@ -231,7 +231,7 @@ done
 function ocrall {
 	# TODO pass if new or reocr all
 	# 0=all 1=new
-	SCANHOME=~/Documents/Scanner
+	SCANHOME=$SCANDOCS
 	
 	cd $SCANHOME
 	for f in `find . -name scan-*.tiff | sed 's/ /~/g'` ; do
@@ -258,10 +258,10 @@ function ocrall {
 function classifyauto {
 	# Classify all auto scanned documents via regex on ocr 
 	
-	SCANHOME=~/Documents/Scanner/Default/Auto
-	MASKHOME=~/Documents/Scanner/Masks
+	SCANHOME=$SCANDOCS/Default/Auto
+	MASKHOME=$SCANDOCS/Masks
 	
-	REGEX=~/Documents/Scanner/.scanregex 
+	REGEX=$SCANDOCS/.scanregex 
 
 	cd $SCANHOME
 	for f in `ls scan-*.tiff` ; do
@@ -316,7 +316,7 @@ function classifyauto {
 function packageall {
 	# TODO pass if new or reocr all
 	# 0=all 1=new
-	SCANHOME=~/Documents/Scanner
+	SCANHOME=$SCANDOCS
 	
 	cd $SCANHOME
 	for f in `find . -name scan-*.tiff | sed 's/ /~/g'` ; do
@@ -354,6 +354,8 @@ function copier {
 			
 }
 
+# start proper of script
+
 MENU=dialog
 
 if [[ -n "$DISPLAY" ]] ; then
@@ -361,6 +363,15 @@ if [[ -n "$DISPLAY" ]] ; then
 	#MENU=zenity
 	echo
 fi
+
+# define the scanner document root
+
+if [[ -z "$SCANDOCS" ]] ; then
+	SCANDOCS=~/Documents/Scanner
+
+	echo "No environment var SCANDOCS, setting default to $SCANDOCS"
+fi
+
 
 # main menu
 
