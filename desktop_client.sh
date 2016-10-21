@@ -384,7 +384,25 @@ while [[ 1 ]] ; do
 	MENOPT=`cat /tmp/scanmenu`
 
 	if [[ "$MENOPT" = "E" ]] ; then
-		vim ~/Documents/Scanner/.scanregex 
+		# use fav editor if known else use vi
+		if [[ -z "$EDITOR" ]] ; then
+			EDITOR="vi"
+		fi
+		# if no file then create stub
+		if [[ -a "$SCANDOCS/.scanregex" ]] ; then
+			echo "Editing existing file"
+		else
+			cat <<-EOF >$SCANDOCS/.scanregex
+# regex for auto classification
+# line format is:
+#   <regrex>~<subdir to file to>~<optional mask>
+#
+# the optional mask can be used to reocr the matched file and extract specific information on the page
+# Mask images should be in png format with transparency painted in where you want to apply the ocr
+# the files are then stored in Masks under the scanner root folder 
+EOF
+		fi
+		$EDITOR $SCANDOCS/.scanregex 
 	fi
 	if [[ "$MENOPT" = "L" ]] ; then
 		classifyauto
