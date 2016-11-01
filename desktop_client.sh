@@ -119,8 +119,7 @@ while [[ 1 ]] ; do
 
 	$MENU --infobox "Page $PAGE: Continuous $DEFD DPI scan until ctrl-c to Default/Auto $f" 15 45 
 
-	scanimage -p -x 215 -y 297 --format tiff --resolution $DEFD --mode Color >"/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff"  
-
+	scanimage --device-name $SCANDEVICE -p -x 215 -y 297 --format tiff --resolution $DEFD --mode Color >"/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff"  
 		if [[ $DOPAUSE -eq 1 ]] ; then
 			$MENU --yesno "Ready for next?" 8 30
 		else
@@ -190,7 +189,7 @@ while [[ 1 ]] ; do
 
 		echo "Scanning into $DEFC/$DEFT"
 
-		scanimage -p -x 215 -y 297 --format tiff --resolution $DEFD --mode Color >"/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff" 
+		scanimage --device-name $SCANDEVICE -p -x 215 -y 297 --format tiff --resolution $DEFD --mode Color >"/$SCANHOME/$DEFC/$DEFT/scan-$f.tiff" 
 
 
 		cd "$SCANHOME/$DEFC/$DEFT"
@@ -338,7 +337,7 @@ function copier {
 		$MENU --inputbox "How many copies?" 8 5 "1" 2>/tmp/copies.txt
 	
 		echo "Scanning"
-		scanimage -p -x 215 -y 297 --format tiff --resolution 150 --mode Gray >/tmp/copier.tiff
+		scanimage --device-name $SCANDEVICE -p -x 215 -y 297 --format tiff --resolution 150 --mode Gray >/tmp/copier.tiff
 		tiff2pdf /tmp/copier.tiff -z -o /tmp/copier.pdf
 	
 		echo "Printing"
@@ -373,10 +372,32 @@ if [[ -z "$SCANDOCS" ]] ; then
 fi
 
 
+# get scanner device so its quicker on each scan if used
+if [[ ! -a "$SCANDOCS/.usedev" ]] ; then
+$MENU --infobox "Scanning for devices" 5 40
+
+scanimage -L >$SCANDOCS/.devices
+
+$MENU --menu "Device Selection" 15 35 8 `cat $SCANDOCS/.devices | gawk '{ print NR " \""$2"\"";}'` 2>$SCANDOCS/.usedev
+
+fi
+
+if [[ ! -a "$SCANDOCS/.usedev" ]] ; then
+	echo "Need to select scanner"
+	exit
+fi
+# get scan device
+
+SCANNO=`cat $SCANDOCS/.usedev`
+SCANDEVICE=`cat $SCANDOCS/.devices | gawk -v SCANL=$SCANNO 'NR==SCANL {print substr($2,2);}'`
+
+SCANDEVICE=`echo $SCANDEVICE|sed s"/'//g"`
+echo $SCANDEVICE
+#exit
 # main menu
 
 while [[ 1 ]] ; do
-	$MENU --menu "Main Menu" 15 35 8 "S" "Scanner" "A" "Auto-scanner" "C" "Photocopy" "O" "OCR All new scans" "F" "Re-OCR all scans (TODO)" "P" "Repackage all PDFs" "L" "Classify Auto-scanner" "E" "Edit classifer patterns" 2>/tmp/scanmenu
+	$MENU --menu "Main Menu" 16 35 9 "S" "Scanner" "A" "Auto-scanner" "C" "Photocopy" "O" "OCR All new scans" "F" "Re-OCR all scans (TODO)" "P" "Repackage all PDFs" "L" "Classify Auto-scanner" "E" "Edit classifer patterns" "D" "Reselect scanner device" 2>/tmp/scanmenu
 
 	if [[ $? -ne 0 ]] ; then
 		exit
@@ -406,6 +427,10 @@ EOF
 	fi
 	if [[ "$MENOPT" = "L" ]] ; then
 		classifyauto
+	fi
+	if [[ "$MENOPT" = "D" ]] ; then
+		rm $SCANDOCS/.usedev
+		exit
 	fi
 	if [[ "$MENOPT" = "A" ]] ; then
 		autoscanner
