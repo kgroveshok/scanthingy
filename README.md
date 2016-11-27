@@ -9,7 +9,7 @@ Added many new features such as PDF packaging and OCR extraction
 # Setup
 
 1. Use (with any possible changes for your environment) the install.sh script to 
-build all the bits
+Build all the bits. Note that the OCR tool is Tesseract and the install.sh script should be reviewed for your platform before use.
 
 2. Set SCANDOCS in your bashrc to point to where you want the scanner doc root to be
 by default it will be ~/Documents/Scanner
